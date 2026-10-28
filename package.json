@@ -1,0 +1,37 @@
+{
+  "name": "unbounded-task-canvas-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "无限任务画布 Dashboard 后端服务（Cloudflare Workers + D1）",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "build": "wrangler deploy --dry-run --outdir dist",
+    "db:init": "wrangler d1 execute unbounded-task-canvas --file=docs/sql/0001_init.sql",
+    "db:init:local": "wrangler d1 execute unbounded-task-canvas --local --file=docs/sql/0001_init.sql",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src test",
+    "lint:fix": "eslint src test --fix",
+    "format": "prettier --write \"src/**/*.js\" \"test/**/*.js\"",
+    "format:check": "prettier --check \"src/**/*.js\" \"test/**/*.js\"",
+    "check": "npm run lint && npm run test"
+  },
+  "dependencies": {
+    "hono": "^4.6.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.0.0",
+    "prettier": "^3.3.0",
+    "vitest": "^3.0.0",
+    "wrangler": "^4.0.0"
+  }
+}

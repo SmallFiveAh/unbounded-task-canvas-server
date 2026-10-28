@@ -1,0 +1,38 @@
+# ============================================================================
+# 无限任务画布 · Dashboard 后端（Cloudflare Workers）
+# ----------------------------------------------------------------------------
+# 本地开发：
+#   1. npm run db:init:local      初始化本地 D1
+#   2. cp .dev.vars.example .dev.vars   填入密钥
+#   3. npm run dev
+# 部署前：
+#   wrangler d1 create unbounded-task-canvas  然后把 database_id 填到下面
+# ============================================================================
+
+name = "unbounded-task-canvas-server"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+workers_dev = true
+
+[observability]
+enabled = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "unbounded-task-canvas"
+database_id = ""
+
+[vars]
+ENVIRONMENT = "development"
+# 前端（Dashboard）地址：用于 CORS 白名单、回跳、邮件链接
+APP_ORIGIN = "http://localhost:5173"
+# 额外允许的 Origin，逗号分隔（例如线上 https://canvas.example.com）
+ALLOWED_ORIGINS = ""
+# PBKDF2 迭代次数（设计文档 §3.2：600k；若超 Worker CPU 限额可降到 210k）
+PBKDF2_ITERATIONS = "600000"
+# 邮件通道：console（开发打印）/ resend / mailchannels
+EMAIL_PROVIDER = "console"
+EMAIL_FROM = "no-reply@example.com"
+# GitHub OAuth App（client_secret 不入库：本地放 .dev.vars，线上用 wrangler secret put）
+GITHUB_CLIENT_ID = ""
+GITHUB_REDIRECT_URI = "http://localhost:8787/api/auth/github/callback"
